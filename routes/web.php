@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +23,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Auth::routes();
+Route::group(['prefix' => 'admin/', 'middleware' => ['role:admin']], function(){
+    Route::get('dashboard' , [AdminController::class, 'dashboard'])->name('adminDash');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['prefix' => 'user/', 'middleware' => ['role:manger|user|viewer']], function(){
+    Route::get('dashboard' , [UserController::class, 'dashboard'])->name('userDash');
+
+});
