@@ -29,7 +29,19 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+
+    protected function redirectTo()
+    {
+        if(auth()->user()->hasRole('admin'))
+        {
+            return route('adminDash');
+        }
+        if(auth()->user()->hasRole('manger') or auth()->user()->hasRole('user') or auth()->user()->hasRole('viewer'))
+        {
+            return route('userDash');
+        }
+        return RouteServiceProvider::HOME;
+    }
 
     /**
      * Create a new controller instance.
@@ -39,8 +51,10 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        
     }
 
+    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -69,7 +83,21 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        $user->attachRole('user');
+        //Set Role
+        if(isset($data['role_id']))
+        {
+            if($data['role_id'] == 'admin')
+            { 
+                $role = 'admin'; 
+            }  elseif($data['role_id'] == 'manger') {
+                $role = 'manger'; 
+            }  elseif($data['role_id'] == 'user') {
+                $role = 'user'; 
+            } elseif($data['role_id'] == 'viewer') {
+                $role = 'viewer'; 
+            }
+            $user->attachRole($role);
+        }
         
         return $user;
     }

@@ -37,8 +37,6 @@ class LoginController extends Controller
         {
             return route('userDash');
         }
-            // redirct after login to home page
-         return RouteServiceProvider::HOME;
     }
 
     /**
