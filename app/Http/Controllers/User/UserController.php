@@ -11,7 +11,7 @@ class UserController extends Controller
         public function __construct()
         {
             $this->middleware('auth');
-            $this->middleware('role:manger|user|viewer');
+            $this->middleware('role:admin|manger|user|viewer');
         }
 
         public function dashboard()

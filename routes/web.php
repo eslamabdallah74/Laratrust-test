@@ -27,7 +27,7 @@ Route::group(['prefix' => 'admin/', 'middleware' => ['role:admin']], function(){
     Route::get('dashboard' , [AdminController::class, 'dashboard'])->name('adminDash');
 });
 
-Route::group(['prefix' => 'user/', 'middleware' => ['role:manger|user|viewer']], function(){
+Route::group(['prefix' => 'user/', 'middleware' => ['role:admin|manger|user|viewer']], function(){
     Route::get('dashboard' , [UserController::class, 'dashboard'])->name('userDash');
 
 });
